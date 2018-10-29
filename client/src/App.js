@@ -26,12 +26,12 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App">
-        <header className="App-header">
+      <div className="text-center">
+        <header className="bg-purple-darker m-6 p-6 rounded shadow-lg">
           <img src={logo} className="App-logo" alt="logo" />
           <h1 className="App-title">Welcome to React</h1>
         </header>
-        <p className="App-intro">{this.state.response}</p>
+        <p className="text-base">{this.state.response}</p>
       </div>
     );
   }
