@@ -2,7 +2,7 @@ import React, {Component} from "react";
 import {connect} from "react-redux";
 import {login} from "../../store/action/authAction";
 
-class SignIn extends Component {
+class Login extends Component {
   state = {
     email: "",
     password: ""
@@ -17,9 +17,14 @@ class SignIn extends Component {
     this.props.dispatch(login(this.state));
   };
 
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.auth.isAuthenticated) {
+      this.props.history.push("/dashboard");
+    }
+  }
+
   render() {
-    const {authError} = this.props;
-    // if (auth.uid) return <Redirect to="/" />;
+    const {auth} = this.props;
     return (
       <div className="container justify-center flex">
         <div className="w-full max-w-md mt-10">
@@ -39,7 +44,7 @@ class SignIn extends Component {
                 className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password" type="password" placeholder="******************" onChange={this.handleChange}/>
             </div>
-            {authError ? <p className="text-red capitalize">{authError}</p> : null}
+            {!auth.user.success ? <p className="text-red capitalize">{auth.user.err}</p> : null}
             <div className="flex items-center justify-between">
               <div className="input-field">
                 <button
@@ -57,8 +62,8 @@ class SignIn extends Component {
 
 const mapStateToProps = state => {
   return {
-    authError: state.auth.authError,
+    auth: state.auth
   };
 };
 
-export default connect(mapStateToProps)(SignIn);
+export default connect(mapStateToProps)(Login);

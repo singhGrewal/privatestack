@@ -99,9 +99,9 @@
 import React, {Component} from "react";
 import {BrowserRouter, Switch, Route} from "react-router-dom";
 // import Navbar from "./components/layout/Navbar";
-// import Dashboard from "./components/dashboard/Dashboard";
+import Dashboard from "./components/dashboard/dashboard";
 // import ProjectDetails from "./components/project/ProjectDetails";
-import SignIn from "./components/auth/SignIn";
+import Login from "./components/auth/Login";
 import SignUp from "./components/auth/SignUp";
 
 // import CreateProject from "./components/project/CreateProject";
@@ -113,8 +113,8 @@ class App extends Component {
         <div className="App container lg mt-4">
           {/*<Navbar />*/}
           <Switch>
-            <Route exact path="/" component={SignUp}/>
-            <Route path="/login" component={SignIn} />
+            <Route exact path="/" component={Dashboard}/>
+            <Route path="/login" component={Login} />
 
             {/* <Route path="/project/:id" component={SignUp} />
             <Route path="/signup" component={SignUp} />

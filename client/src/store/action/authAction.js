@@ -1,7 +1,7 @@
 import axios from 'axios';
-import { Redirect } from "react-router-dom";
+import setAuthToken from '../../utils/setAuthToken';
 import React from 'react';
-
+import jwt_decode from 'jwt-decode';
 
 export const userCreated = () => {
   return {
@@ -40,14 +40,33 @@ export const register = (payload, history) => dispatch => {
 export const login = (payload, history) => dispatch => {
   axios
     .post("/api/users/login", payload)
-    .then(res => dispatch(loginSuccess(res.data)))
-    .catch(err => dispatch(loginError(err.response.status)));
-    // .catch(err =>{
-    //   if(err){
-    //     console.log("yes",err.message , err.status )
-    //   }
-    //
-    // });
+    .then(res =>{
+      // Save to localStorage
+      const { token } = res.data;
+      console.log("token",token)
+      // Set token to ls
+      localStorage.setItem('jwtToken', token);
+      // Set token to Auth header
+      setAuthToken(token);
+      // Decode token to get user data
+      const decoded = jwt_decode(token);
+      // Set current user
+      dispatch(setCurrentUser(decoded));
+    })
+    .catch(err =>
+      dispatch({
+        type: "GET_ERRORS",
+        payload: err.response.data
+      })
+    );
+};
+
+// Set logged in user
+export const setCurrentUser = decoded => {
+  return {
+    type: "SET_CURRENT_USER",
+    payload: decoded
+  };
 };
 
 
