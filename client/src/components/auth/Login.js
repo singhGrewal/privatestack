@@ -24,7 +24,8 @@ class Login extends Component {
   }
 
   render() {
-    const {auth} = this.props;
+    const {isAuthenticated, user} = this.props.auth;
+
     return (
       <div className="container justify-center flex">
         <div className="w-full max-w-md mt-10">
@@ -44,7 +45,7 @@ class Login extends Component {
                 className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password" type="password" placeholder="******************" onChange={this.handleChange}/>
             </div>
-            {!auth.user.success ? <p className="text-red capitalize">{auth.user.err}</p> : null}
+            {!isAuthenticated ? <p className="text-red capitalize">{user.email}</p> : null}
             <div className="flex items-center justify-between">
               <div className="input-field">
                 <button

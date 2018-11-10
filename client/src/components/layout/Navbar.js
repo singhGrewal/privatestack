@@ -1,38 +1,47 @@
-import React from "react";
+import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import SignedInLinks from "./SignedInLinks";
 import SignedOutLinks from "./SignedOutLinks";
 import { connect } from "react-redux";
 
-const Navbar = props => {
-  const { auth, profile } = props;
-  // const logInOut = auth.uid ? (
-  //   <SignedInLinks profile={profile} />
-  // ) : (
-  //   <SignedOutLinks />
-  // );
-  return (
-    <nav className="nav-wrapper grey darken-3">
-      <div className="container">
-        {/*<Link to="/" className="brand-logo">*/}
-          {/*{profile.firstName}*/}
-        {/*</Link>*/}
-        {/*{logInOut}*/}
-        <SignedInLinks/>
-        <SignedOutLinks/>
+class Navbar extends Component {
 
-      </div>
-    </nav>
-  );
+  render() {
+    const {isAuthenticated, user} = this.props.auth;
+    // console.log('isAuthenticated', isAuthenticated)
+    // console.log('user', user)
+
+    const logInOut = isAuthenticated.id ? (
+      <SignedInLinks />
+    ) : (
+      <SignedOutLinks user={user} isAuthenticated={isAuthenticated}/>
+    );
+    return (
+      <nav className="nav-wrapper grey darken-3">
+        <div className="container">
+          {/*<Link to="/" className="brand-logo">*/}
+          {/*{profile.firstName}*/}
+          {/*</Link>*/}
+          {/*{logInOut}*/}
+          {/*<SignedInLinks/>*/}
+          {/*<SignedOutLinks/>*/}
+
+          {logInOut}
+
+        </div>
+      </nav>
+    );
+  };
+}
+
+const mapStateToProps = state => {
+  console.log("state", state);
+  return {
+    // auth: state.firebase.auth,
+    // profile: state.firebase.profile
+    auth: state.auth
+  };
 };
 
-// const mapStateToProps = state => {
-//   console.log(state);
-//   return {
-//     auth: state.firebase.auth,
-//     profile: state.firebase.profile
-//   };
-// };
 
-export default Navbar;
-// export default connect(mapStateToProps)(Navbar);
+export default connect(mapStateToProps)(Navbar);

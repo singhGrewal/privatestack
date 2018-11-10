@@ -9,6 +9,9 @@ import {setCurrentUser, logoutUser} from './store/action/authAction';
 import {Provider} from 'react-redux';
 import store from './store/store';
 
+import Navbar from "./components/layout/Navbar"
+import Register from "./components/auth/Register"
+
 // Check for token
 if (localStorage.jwtToken) {
   // Set auth token header auth
@@ -36,10 +39,11 @@ class App extends Component {
       <Provider store={store}>
         <Router>
           <div className="App container lg mt-4">
-            {/*<Navbar />*/}
+            <Navbar />
             <Switch>
               <Route exact path="/" component={Dashboard}/>
               <Route path="/login" component={Login}/>
+              <Route path="/register" component={Register} />
 
               {/* <Route path="/project/:id" component={SignUp} />
             <Route path="/signup" component={SignUp} />

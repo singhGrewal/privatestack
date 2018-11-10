@@ -1,35 +1,40 @@
-// import React from "react";
-// import { NavLink } from "react-router-dom";
-// // import { connect } from "react-redux";
-// // import { signOut } from "../../store/actions/authActions";
-//
-// const SignedInLinks = props => {
-//   return (
-//     <div>
-//       <ul className="right">
-//         <li>
-//           <NavLink to="/create">New Project</NavLink>
-//         </li>
-//         <li>
-//           <a onClick={props.signOut}>Log Out</a>
-//         </li>
-//         <li>
-//           <NavLink to="/" className="btn btn-floating pink lighten-1">
-//             {props.profile.initials}
-//           </NavLink>
-//         </li>
-//       </ul>
-//     </div>
-//   );
-// };
-//
-// const mapDispatchToProps = dispatch => {
-//   return {
-//     signOut: () => dispatch(signOut())
-//   };
-// };
-//
-// export default connect(
-//   null,
-//   mapDispatchToProps
-// )(SignedInLinks);
+import React, {Component} from 'react';
+import {NavLink} from "react-router-dom";
+import {connect} from "react-redux";
+import {logoutUser} from "../../store/action/authAction";
+
+class SignedInLinks extends Component {
+  onLogoutClick(e) {
+    e.preventDefault();
+    this.props.logoutUser();
+  }
+
+  render() {
+    return (
+      <div>
+        <ul className="right">
+          <li>
+            <NavLink to="/create">New Project</NavLink>
+          </li>
+          <li>
+            <a href="" onClick={this.onLogoutClick.bind(this)}>Log Out</a>
+          </li>
+          <li>
+            <NavLink to="/" className="btn btn-floating pink lighten-1">
+              tej
+            </NavLink>
+          </li>
+        </ul>
+      </div>
+    );
+  };
+}
+
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+};
+
+
+export default connect(mapStateToProps, {logoutUser})(SignedInLinks);

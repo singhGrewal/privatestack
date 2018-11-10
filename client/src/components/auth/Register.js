@@ -1,8 +1,8 @@
 import React, {Component} from "react";
 import {connect} from "react-redux";
-import {register} from "../../store/action/authAction"
+import {registerUser} from "../../store/action/authAction"
 
-class SignUp extends Component {
+class Register extends Component {
   state = {
     email: "",
     password: "",
@@ -18,8 +18,7 @@ class SignUp extends Component {
     console.log("handleSubmit")
     e.preventDefault();
     console.log("log", this.state)
-    this.props.dispatch(register(this.state));
-
+    this.props.dispatch(registerUser(this.state));
   };
 
   render() {
@@ -74,4 +73,4 @@ class SignUp extends Component {
   }
 }
 
-export default connect()(SignUp);
+export default Register;
