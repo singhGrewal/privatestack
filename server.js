@@ -37,7 +37,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-// const passport = require("passport");
+const passport = require("passport");
 const path = require("path");
 
 const users = require("./routes/api/users");
@@ -60,10 +60,10 @@ mongoose
   .catch(err => console.log(err));
 
 // Passport middleware
-// app.use(passport.initialize());
+app.use(passport.initialize());
 
 // Passport Config
-// require("./config/passport")(passport);
+require("./config/passport")(passport);
 
 // Use Routes
 console.log("Server")

@@ -4,7 +4,7 @@ const User = require("../../src/models/signUpModel");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
-// const passport = require("passport");
+const passport = require("passport");
 
 // @route   POST api/users/register
 // @desc    Register user
@@ -101,8 +101,8 @@ router.post("/login", (req, res) => {
   User.findOne({ email }).then(user => {
     // Check for user
     if (!user) {
-      errors.email = "User not found";
-      return res.status(404).json(errors);
+      // errors.email = "User not found";
+      return res.status(404).json({email: 'Email not found'});
     }
 
     // Check Password
@@ -126,7 +126,7 @@ router.post("/login", (req, res) => {
       } else {
         // errors.password = "Password incorrect";
         // return res.status(400).json(errors);
-        res.status(401).json({
+        res.status(404).json({
           success: false,
           token: null,
           err: 'Username or password is incorrect'
@@ -135,6 +135,21 @@ router.post("/login", (req, res) => {
     });
   });
 });
+
+// @route   GET api/users/current
+// @desc    Return current user
+// @access  Private
+router.get(
+  "/current",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    res.json({
+      id: req.user.id,
+      name: req.user.name,
+      email: req.user.email
+    });
+  }
+);
 
 
 module.exports = router;
