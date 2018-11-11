@@ -2,7 +2,8 @@ import { SET_CURRENT_USER } from '../types';
 
 const initialState = {
   isAuthenticated: false,
-  user: {}
+  user: {},
+  error:''
 };
 
 export default function (state = initialState, action) {
@@ -14,11 +15,10 @@ export default function (state = initialState, action) {
         user: action.payload
       };
     case "GET_ERRORS":
-      console.log("signup error", action.payload);
       return {
         ...state,
         isAuthenticated: false,
-        user: action.payload
+        error: action.payload
       }
     default:
       return state;

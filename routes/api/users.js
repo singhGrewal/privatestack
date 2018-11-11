@@ -10,12 +10,6 @@ const passport = require("passport");
 // @desc    Register user
 // @access  Public
 
-console.log("Users")
-
-const error = {
-  error: 'Not a valid password'
-}
-
 router.post("/register", (req, res) => {
   //   const { errors, isValid } = validateRegisterInput(req.body);
 
@@ -28,8 +22,7 @@ router.post("/register", (req, res) => {
 
   User.findOne({email: req.body.email}).then(user => {
     if (user) {
-      errors.email = "Email already exists";
-      return res.status(400).json(errors);
+      return res.status(400).send("Email already exists");
     } else {
       const newUser = new User({
         name: req.body.name,
@@ -98,7 +91,7 @@ router.post("/login", (req, res) => {
   const password = req.body.password;
 
   // Find user by email
-  User.findOne({ email }).then(user => {
+  User.findOne({email}).then(user => {
     // Check for user
     if (!user) {
       // errors.email = "User not found";
@@ -109,13 +102,13 @@ router.post("/login", (req, res) => {
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
         // User Matched
-        const payload = { id: user.id, name: user.name}; // Create JWT Payload
+        const payload = {id: user.id, name: user.name}; // Create JWT Payload
 
         // Sign Token
         jwt.sign(
           payload,
           keys.secretOrKey,
-          { expiresIn: 3600 },
+          {expiresIn: 3600},
           (err, token) => {
             res.json({
               success: true,
@@ -141,7 +134,7 @@ router.post("/login", (req, res) => {
 // @access  Private
 router.get(
   "/current",
-  passport.authenticate("jwt", { session: false }),
+  passport.authenticate("jwt", {session: false}),
   (req, res) => {
     res.json({
       id: req.user.id,

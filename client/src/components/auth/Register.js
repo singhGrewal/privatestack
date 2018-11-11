@@ -8,6 +8,7 @@ class Register extends Component {
     password: "",
     firstName: "",
     lastName: "",
+    isDisabled: true
   };
   handleChange = e => {
     this.setState({
@@ -21,8 +22,87 @@ class Register extends Component {
     this.props.dispatch(registerUser(this.state));
   };
 
+  handleChangeValidate = (e) => {
+    const target = e.target;
+    const value = target.type === 'checkbox' ? target.checked : target.value;
+    const name = target.name;
+
+    // console.log("handleChangeValidate e.target.name", e.target.name)
+    // console.log("handleChangeValidate  e.target.value", e.target.value)
+    // console.log("handleChangeValidate", this.setState)
+
+    this.setState({
+      [e.target.name]: e.target.value
+    });
+
+    // console.log("handleChangeValidate", this.setState)
+
+    if (e.target.name === 'firstName') {
+      console.log("firstName")
+      if (e.target.value === '' || e.target.value === null) {
+        this.setState({
+          firstnameError: true
+        })
+      } else {
+        this.setState({
+          firstnameError: false,
+          firstName: e.target.value
+        })
+      }
+    }
+
+    // if(e.target.name==='lastname'){
+    //   if(e.target.value==='' || e.target.value===null){
+    //     this.setState({
+    //       lastnameError:true
+    //     })
+    //   } else {
+    //     this.setState({
+    //       lastnameError:false,
+    //       lastName:e.target.value
+    //     })
+    //   }
+    // }
+    // if(e.target.name==='email'){
+    //   this.validateEmail(e.target.value);
+    // }
+    // if(e.target.name==='password'){
+    //   if(e.target.value==='' || e.target.value===null){
+    //     this.setState({
+    //       passwordError:true
+    //     })
+    //   } else {
+    //     this.setState({
+    //       passwordError:false,
+    //       password:e.target.value
+    //     })
+    //   }
+    // }
+    // if(this.state.firstnameError===false && this.state.lastnameError===false &&
+    //   this.state.emailError===false && this.state.passwordError===false){
+    //   this.setState({
+    //     isDisabled:false
+    //   })
+    // }
+  }
+
+  validateEmail(email) {
+    const pattern = /[a-zA-Z0-9]+[\.]?([a-zA-Z0-9]+)?[\@][a-z]{3,9}[\.][a-z]{2,5}/g;
+    const result = pattern.test(email);
+    if (result === true) {
+      this.setState({
+        emailError: false,
+        email: email
+      })
+    } else {
+      this.setState({
+        emailError: true
+      })
+    }
+  }
+
   render() {
-    // const {authError, auth} = this.props;
+    const {auth} = this.props;
     return (
       <div className="container justify-center flex">
         <div className="w-full max-w-md mt-10">
@@ -56,13 +136,12 @@ class Register extends Component {
               <input
                 className="shadow appearance-none border border-red rounded w-full py-2 px-3 text-grey-darker mb-3 leading-tight focus:outline-none focus:shadow-outline"
                 id="password" type="password" placeholder="******************" onChange={this.handleChange}/>
-              <p className="text-red text-xs italic">Please choose a password.</p>
             </div>
+            {auth.error ? <p className="text-red">{auth.error}</p> : null}
             <div className="flex items-center justify-between">
               <div className="input-field">
                 <button
-                  className="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Sign
-                  Up
+                  className="bg-blue hover:bg-blue-dark text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Register
                 </button>
               </div>
             </div>
@@ -73,4 +152,11 @@ class Register extends Component {
   }
 }
 
-export default Register;
+const mapStateToProps = state => {
+  return {
+    auth: state.auth
+  };
+};
+
+
+export default connect(mapStateToProps)(Register);
