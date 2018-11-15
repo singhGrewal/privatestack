@@ -33,7 +33,11 @@ class Todo extends Component {
             this.setState({ action: "" });
           }
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          if (err.response.status === 401) {
+            this.props.history.push("/login");
+          }
+        });
     } else {
       console.log("input field required");
     }
