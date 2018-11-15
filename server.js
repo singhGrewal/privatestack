@@ -1,39 +1,3 @@
-// const express = require("express");
-// var bodyParser = require("body-parser");
-// const routes = require("./src/routes");
-// const PORT = process.env.PORT || 5000;
-// const path = require("path");
-// const app = express();
-
-// // Body parser middleware
-// app.use(bodyParser.urlencoded({ extended: false }));
-// app.use(bodyParser.json());
-
-// // require db connection
-// require("./src/models");
-
-// // configure body parser for AJAX requests
-// app.use(express.urlencoded({ extended: true }));
-// app.use(express.json());
-
-// // add this line
-// app.use(express.static("client/build"));
-
-// // // routes
-// // app.get("/api/users/register", (req, res) => {
-// //   console.log("req 11111", req.body);
-// //   res.send("Hello from MERN");
-// // });
-
-// app.use(bodyParser.json());
-
-// app.use(routes);
-
-// // Bootstrap server
-// app.listen(PORT, () => {
-//   console.log(`Server listening on port ${PORT}.`);
-// });
-
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
@@ -41,23 +5,25 @@ const passport = require("passport");
 const path = require("path");
 
 const users = require("./routes/api/users");
-// const profile = require('./routes/api/profile');
-// const posts = require('./routes/api/posts');
+const todo = require("./routes/todo/todos");
 
 const app = express();
-
-// Body parser middleware
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(bodyParser.json());
 
 // DB Config
 const db = require("./config/keys").mongoURI;
 
 // Connect to MongoDB
 mongoose
-  .connect(db)
+  .connect(
+    db,
+    { useNewUrlParser: true }
+  )
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.log("MongoDB Not Connected", err));
+
+// Body parser middleware
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
 
 // Passport middleware
 app.use(passport.initialize());
@@ -66,10 +32,8 @@ app.use(passport.initialize());
 require("./config/passport")(passport);
 
 // Use Routes
-console.log("Server")
 app.use("/api/users", users);
-// app.use('/api/profile', profile);
-// app.use('/api/posts', posts);
+app.use("/api", todo);
 
 // Server static assets if in production
 if (process.env.NODE_ENV === "production") {
@@ -82,5 +46,4 @@ if (process.env.NODE_ENV === "production") {
 }
 
 const port = process.env.PORT || 5000;
-
 app.listen(port, () => console.log(`Server running on port ${port}`));

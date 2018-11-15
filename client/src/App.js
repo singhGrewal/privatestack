@@ -1,16 +1,17 @@
-import React, {Component} from 'react';
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
+import React, { Component } from "react";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Dashboard from "./components/dashboard/dashboard";
 import Login from "./components/auth/Login";
-import jwt_decode from 'jwt-decode';
-import setAuthToken from './utils/setAuthToken';
-import {setCurrentUser, logoutUser} from './store/action/authAction';
+import jwt_decode from "jwt-decode";
+import setAuthToken from "./utils/setAuthToken";
+import { setCurrentUser, logoutUser } from "./store/action/authAction";
 
-import {Provider} from 'react-redux';
-import store from './store/store';
+import { Provider } from "react-redux";
+import store from "./store/store";
 
-import Navbar from "./components/layout/Navbar"
-import Register from "./components/auth/Register"
+import Navbar from "./components/layout/Navbar";
+import Register from "./components/auth/Register";
+import Todo from "./components/todo/todo";
 
 // Check for token
 if (localStorage.jwtToken) {
@@ -29,7 +30,7 @@ if (localStorage.jwtToken) {
     // Clear current Profile
     // store.dispatch(clearCurrentProfile());
     // Redirect to login
-    window.location.href = '/login';
+    window.location.href = "/login";
   }
 }
 
@@ -41,9 +42,10 @@ class App extends Component {
           <div className="App container lg mt-4">
             <Navbar />
             <Switch>
-              <Route exact path="/" component={Dashboard}/>
-              <Route path="/login" component={Login}/>
+              <Route exact path="/" component={Dashboard} />
+              <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/todo" component={Todo} />
 
               {/* <Route path="/project/:id" component={SignUp} />
             <Route path="/signup" component={SignUp} />
